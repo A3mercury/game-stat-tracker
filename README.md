@@ -4,9 +4,7 @@ Since Fall Guys doesn't show you stats for levels and wins. I wanted to create a
 
 ## Buckets
 - [ ] Track Rounds, Levels, Crowns, unlocked Skins, etc.
-- [ ] Run daily Laravel jobs to check if new FG data from multiple sources.
-    - [ ] Pull achievements from steam.
-    - [ ] Pull levels from FG website.
+- [ ] Run daily Laravel jobs to check if new data from https://fallguysapi.tk/ is updated. Load into our DB.
 - [ ] In-game Achievements.
     - [ ] List all achievements and details.
     - [ ] Indicate which achievements are unlocked by player.
