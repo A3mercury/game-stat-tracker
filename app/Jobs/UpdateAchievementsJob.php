@@ -24,23 +24,32 @@ class UpdateAchievementsJob implements ShouldQueue
      */
     public function handle()
     {
+        Log::info('Processing Achievements from https://fallguysapi.tk/api/achievements');
+
         $client = new Client();
         $request = new Request('GET', 'https://fallguysapi.tk/api/achievements');
         $promise = $client->sendAsync($request)->then(function ($response) use ($client) {
             $achievements = json_decode($response->getBody()->getContents());
+            $total_added = 0;
             foreach ($achievements as $i => $a) {
                 $achievement = Achievement::where('identifier', $a->name)->firstOr(function () use ($a) {
-                    return Achievement::create([
+                    $new_achievement = Achievement::create([
                         'identifier' => $a->name,
                         'display_name' => $a->displayName,
                         'description' => $a->description,
                         'icon' => $a->icon,
                         'icon_gray' => $a->icongray,
                     ]);
-                });
 
-                Log::info('Achievement added: ' . $achievement->display_name);
+                    $total_added++;
+                    
+                    Log::info('Achievement added: ' . $new_achievement->display_name);
+
+                    return $new_achievement;
+                });
             }
+
+            Log::info($total_added . ' Achievements added.');
         });
         $promise->wait();
     }
