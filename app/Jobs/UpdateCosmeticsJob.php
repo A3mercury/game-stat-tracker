@@ -33,7 +33,7 @@ class UpdateCosmeticsJob implements ShouldQueue
             $cosmetics = json_decode($response->getBody()->getContents());
             $total_added = 0;
             foreach ($cosmetics as $c) {
-                $cosmetic = Cosmetic::where('identifier', $c->id)->firstOr(function () use ($c) {
+                $cosmetic = Cosmetic::where('identifier', $c->id)->firstOr(function () use ($c, &$total_added) {
                     $start = isset($c->shop->dates[0]) ? $c->shop->dates[0] : null;
                     $end = isset($c->shop->dates[1]) ? $c->shop->dates[1] : null;
                     $new_cosmetic = Cosmetic::create([

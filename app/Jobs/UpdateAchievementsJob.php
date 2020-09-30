@@ -32,7 +32,7 @@ class UpdateAchievementsJob implements ShouldQueue
             $achievements = json_decode($response->getBody()->getContents());
             $total_added = 0;
             foreach ($achievements as $i => $a) {
-                $achievement = Achievement::where('identifier', $a->name)->firstOr(function () use ($a) {
+                $achievement = Achievement::where('identifier', $a->name)->firstOr(function () use ($a, &$total_added) {
                     $new_achievement = Achievement::create([
                         'identifier' => $a->name,
                         'display_name' => $a->displayName,
@@ -41,8 +41,6 @@ class UpdateAchievementsJob implements ShouldQueue
                         'icon_gray' => $a->icongray,
                     ]);
 
-                    $total_added++;
-                    
                     Log::info('Achievement added: ' . $new_achievement->display_name);
 
                     return $new_achievement;

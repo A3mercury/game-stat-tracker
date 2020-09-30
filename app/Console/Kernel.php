@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Jobs\UpdateRoundsJob;
 use App\Jobs\UpdateCosmeticsJob;
 use App\Jobs\UpdateAchievementsJob;
 use Illuminate\Console\Scheduling\Schedule;
@@ -28,6 +29,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->job(new UpdateAchievementsJob)->daily();
         $schedule->job(new UpdateCosmeticsJob)->daily();
+        $schedule->job(new UpdateRoundsJob)->daily();
     }
 
     /**
